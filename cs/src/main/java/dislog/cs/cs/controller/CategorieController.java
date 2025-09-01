@@ -48,4 +48,9 @@ public class CategorieController {
         return ResponseEntity.status(200).body(categorieService.getById(id));
     }
 
+    @GetMapping("/count")
+    public Long countActiveCategories() {
+        return categorieService.countActive();
+    }
+
 }

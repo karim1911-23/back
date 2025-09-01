@@ -32,4 +32,12 @@ public class PosteService {
         activite.setActive(false);
         return posteRepo.save(activite);
     }
+
+    public Poste getByPoste(String poste) {
+        return posteRepo.findByPoste(poste);
+    }
+
+    public Long countActive() {
+        return posteRepo.countActive();
+    }
 }

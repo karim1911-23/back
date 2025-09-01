@@ -1,12 +1,14 @@
 package dislog.cs.cs.model;
 
-import java.util.Date;
-
+import dislog.cs.cs.model.utils.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,36 +17,51 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Collaborateur {
+public class Collaborateur extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nom;
-    private String prenom;
-    private String cin;
-    private String cnss;
-    private String ctr;
-    private Date dateDepart;
-    private Date dateAnc;
-    private Date dateEmb;
-    private Date dateNaissance;
 
-    @ManyToOne()
+    private String matricule;
+
+    private String nom;
+
+    private String prenom;
+
+    private String cin;
+
+    private String cnss;
+
+    private String ctr;
+
+    private String motifDepart;
+    private String stc;
+
+    private String dateDepart;
+
+    private String dateAnc;
+
+    private String dateEmb;
+
+    private String dateNaissance;
+
+    private Boolean isActive = true;
+
+    @ManyToOne
     private Activite activite;
 
-    @ManyToOne()
+    @ManyToOne
     private Poste poste;
 
-    @ManyToOne()
+    @ManyToOne
     private Departement departement;
 
-    @ManyToOne()
+    @ManyToOne
     private Site site;
 
-    @ManyToOne()
+    @ManyToOne
     private Categorie categorie;
 
-    @ManyToOne()
+    @ManyToOne
     private Service service;
-
 }

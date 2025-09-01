@@ -12,11 +12,11 @@ import dislog.cs.cs.repository.CategorieRepo;
 
 @Service
 public class CategorieService {
-    
+
     @Autowired
     private CategorieRepo categorieRepo;
 
-     public Categorie create(Categorie activite) {
+    public Categorie create(Categorie activite) {
         return categorieRepo.save(activite);
     }
 
@@ -28,9 +28,17 @@ public class CategorieService {
         return categorieRepo.findById(id).orElseThrow(() -> new UserNotFoundException("Activite not found : " + id));
     }
 
+    public Categorie getByCategorie(String id) {
+        return categorieRepo.findByCategorie(id);
+    }
+
     public Categorie delete(Long id) {
         Categorie activite = this.getById(id);
         activite.setActive(false);
         return categorieRepo.save(activite);
+    }
+
+    public Long countActive() {
+        return categorieRepo.countActive();
     }
 }

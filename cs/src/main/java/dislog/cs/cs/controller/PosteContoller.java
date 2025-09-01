@@ -49,4 +49,9 @@ public class PosteContoller {
         return ResponseEntity.status(200).body(posteService.getById(id));
     }
 
+    @GetMapping("/count")
+    public Long countActivePostes() {
+        return posteService.countActive();
+    }
+
 }

@@ -49,4 +49,8 @@ public class ServiceController {
         return ResponseEntity.status(200).body(scs.getById(id));
     }
 
+    @GetMapping("/count")
+    public Long countActiveServices() {
+        return scs.countActive();
+    }
 }

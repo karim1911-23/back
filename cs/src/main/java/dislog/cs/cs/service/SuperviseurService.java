@@ -25,19 +25,32 @@ public class SuperviseurService {
         return superviseurMapping.supervToSuperviseurValidation(superviseurRepo.save(s));
     }
 
+    public SuperviseurValidation update(SuperviseurValidation sv) {
+        Superviseur existing = superviseurRepo.findById(sv.getId())
+                .orElseThrow(() -> new UserNotFoundException("Superviseur id : " + sv.getId() + " introuvable"));
+
+        Superviseur updated = superviseurMapping.superviseurValidationToSuperv(sv);
+        updated.setId(existing.getId()); // assure qu'on écrase l'existant
+        return superviseurMapping.supervToSuperviseurValidation(superviseurRepo.save(updated));
+    }
+
     public Superviseur getById(Long id) {
         return superviseurRepo.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("Superviseur id : " + id + " introuvable"));
     }
 
-    public List<Superviseur> getAll(){
-        return superviseurRepo.findAll();
+    public List<Superviseur> getAll() {
+        return superviseurRepo.findByIsActiveTrue();
     }
 
-    public Superviseur delete(Long id){
-        Superviseur s=this.getById(id);
+    public Superviseur delete(Long id) {
+        Superviseur s = this.getById(id);
         s.setActive(false);
         superviseurRepo.save(s);
         return s;
+    }
+
+    public Long countActive() {
+        return superviseurRepo.countActive();
     }
 }

@@ -17,4 +17,6 @@ public class LieuArret {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String lieu;
+    private Boolean isActive = true;
+
 }

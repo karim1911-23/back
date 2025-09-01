@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dislog.cs.cs.exception.UserNotFoundException;
-import dislog.cs.cs.model.Activite;
 import dislog.cs.cs.model.Departement;
 import dislog.cs.cs.repository.DepartementRepo;
 
@@ -28,6 +27,13 @@ public class DepartementService {
         return departementRepo.findById(id).orElseThrow(() -> new UserNotFoundException("Activite not found : " + id));
     }
 
+    public Departement getByDepartement(String id) {
+        return departementRepo.findByDepartement(id);
+    }
+
+    public Long countActive() {
+        return departementRepo.countActive();
+    }
     public Departement delete(Long id) {
         Departement activite = this.getById(id);
         activite.setActive(false);

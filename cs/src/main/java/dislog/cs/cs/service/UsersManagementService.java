@@ -11,7 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import dislog.cs.cs.model.OurUsers;
+import dislog.cs.cs.model.Superviseur;
 import dislog.cs.cs.model.dto.ReqRes;
+import dislog.cs.cs.repository.SuperviseurRepo;
 import dislog.cs.cs.repository.UsersRepo;
 
 @Service
@@ -27,6 +29,8 @@ public class UsersManagementService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private SuperviseurService superviseurService;
+    @Autowired
+    private SuperviseurRepo superviseurRepo;
 
     public ReqRes register(ReqRes registrationRequest) {
         ReqRes resp = new ReqRes();
@@ -66,6 +70,10 @@ public class UsersManagementService {
                     .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
             System.out.println("User Role: " + user.getRole());
 
+            Superviseur s = null;
+            if ("USER".equalsIgnoreCase(user.getRole())) {
+                s = superviseurRepo.findByEmail(loginRequest.getEmail());
+            }
             var jwt = jwtUtils.generateToken(user);
             var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
             var usernameAuth = jwtUtils.extractUsername(jwt);
@@ -77,6 +85,7 @@ public class UsersManagementService {
             response.setName(String.valueOf(user.getName().charAt(0)).toUpperCase());
             response.setRole(user.getRole());
             response.setFullName(user.getName());
+            response.setSuperviseur(s);
 
             response.setRefreshToken(refreshToken);
             response.setExpirationTime("24Hrs");
@@ -137,10 +146,17 @@ public class UsersManagementService {
     public ReqRes getUsersById(Integer id) {
         ReqRes reqRes = new ReqRes();
         try {
-            OurUsers usersById = usersRepo.findById(id).orElseThrow(() -> new RuntimeException("User Not found"));
-            reqRes.setOurUsers(usersById);
-            reqRes.setStatusCode(200);
-            reqRes.setMessage("Users with id '" + id + "' found successfully");
+            Long ids = (long) id;
+            Superviseur s = superviseurService.getById(ids);
+            Optional<OurUsers> userOptional = usersRepo.findBySuperviseur(s);
+            if (userOptional.isPresent()) {
+                reqRes.setOurUsers(userOptional.get());
+                reqRes.setStatusCode(200);
+                reqRes.setMessage("Users with id '" + id + "' found successfully");
+            } else {
+                reqRes.setStatusCode(404);
+                reqRes.setMessage("User not found with id '" + id + "'");
+            }
         } catch (Exception e) {
             reqRes.setStatusCode(500);
             reqRes.setMessage("Error occurred: " + e.getMessage());
@@ -167,10 +183,15 @@ public class UsersManagementService {
         return reqRes;
     }
 
-    public ReqRes updateUser(Integer userId, OurUsers updatedUser) {
+    public ReqRes updateUser(Long userId, OurUsers updatedUser) {
+        System.out.println("User ID : " + userId);
+        System.out.println("User  : " + updatedUser);
+
         ReqRes reqRes = new ReqRes();
         try {
-            Optional<OurUsers> userOptional = usersRepo.findById(userId);
+            Long id = (long) userId;
+            Superviseur s = superviseurService.getById(id);
+            Optional<OurUsers> userOptional = usersRepo.findBySuperviseur(s);
             if (userOptional.isPresent()) {
                 OurUsers existingUser = userOptional.get();
 
@@ -193,6 +214,7 @@ public class UsersManagementService {
                 }
 
                 OurUsers savedUser = usersRepo.save(existingUser);
+                System.out.println("Saved User : " + savedUser);
                 reqRes.setOurUsers(savedUser);
                 reqRes.setStatusCode(200);
                 reqRes.setMessage("User updated successfully");

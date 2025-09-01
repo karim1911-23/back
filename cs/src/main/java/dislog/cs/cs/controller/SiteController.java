@@ -49,4 +49,9 @@ public class SiteController {
         return ResponseEntity.status(200).body(siteService.getById(id));
     }
 
+    @GetMapping("/count")
+    public Long countActiveSites() {
+        return siteService.countActive();
+    }
+
 }

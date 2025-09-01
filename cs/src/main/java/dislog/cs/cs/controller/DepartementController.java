@@ -49,4 +49,9 @@ public class DepartementController {
         return ResponseEntity.status(200).body(departementService.getById(id));
     }
 
+    @GetMapping("/count")
+    public Long countActiveDepartements() {
+        return departementService.countActive();
+    }
+
 }

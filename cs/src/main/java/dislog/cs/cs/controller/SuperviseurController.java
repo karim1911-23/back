@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @Validated
-@RequestMapping("/admin/api/superviseur")
+@RequestMapping("api/adminuser/superviseur")
 public class SuperviseurController {
     @Autowired
     private SuperviseurService superviseurService;
@@ -34,7 +34,7 @@ public class SuperviseurController {
 
     @PutMapping("/update")
     public ResponseEntity<SuperviseurValidation> update(@RequestBody @Valid SuperviseurValidation sv) {
-        return ResponseEntity.status(200).body(superviseurService.create(sv));
+        return ResponseEntity.status(200).body(superviseurService.update(sv));
     }
 
     @GetMapping("/all")
@@ -53,5 +53,10 @@ public class SuperviseurController {
     public ResponseEntity<Superviseur> delete(@PathVariable Long id) {
         Superviseur s = superviseurService.delete(id);
         return ResponseEntity.status(200).body(s);
+    }
+
+    @GetMapping("/count")
+    public Long countActiveSuperviseurs() {
+        return superviseurService.countActive();
     }
 }

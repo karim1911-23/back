@@ -11,11 +11,11 @@ import dislog.cs.cs.repository.EnergieRepo;
 
 @Service
 public class EnergieService {
-    
+
     @Autowired
     private EnergieRepo energieRepo;
 
-     public Energie create(Energie activite) {
+    public Energie create(Energie activite) {
         return energieRepo.save(activite);
     }
 
@@ -27,9 +27,17 @@ public class EnergieService {
         return energieRepo.findById(id).orElseThrow(() -> new UserNotFoundException("Activite not found : " + id));
     }
 
+    public Energie getByEnergie(String id) {
+        return energieRepo.findByEnergie(id);
+    }
+
     public Energie delete(Long id) {
         Energie activite = this.getById(id);
         activite.setActive(false);
         return energieRepo.save(activite);
+    }
+
+    public Long countActive() {
+        return energieRepo.countActive();
     }
 }

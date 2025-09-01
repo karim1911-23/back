@@ -31,10 +31,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(request -> request.requestMatchers("/auth/**", "/public/**").permitAll()
+                .authorizeHttpRequests(request -> request.requestMatchers("/auth/**", "/public/**","/ws/**").permitAll()
+                .requestMatchers("/api/adminuser/files/image/**").permitAll()
                         .requestMatchers("/api/admin/**").hasAnyAuthority("ADMIN")
                         .requestMatchers("/api/user/**").hasAnyAuthority("USER")
                         .requestMatchers("/api/adminuser/**").hasAnyAuthority("ADMIN", "USER")
+
                         .anyRequest().authenticated())
                 .logout(l -> l.logoutUrl("/auth/logout"))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(

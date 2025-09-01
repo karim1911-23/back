@@ -26,9 +26,17 @@ public class ServiceCollaborateurService {
         return serviceRepo.findById(id).orElseThrow(() -> new UserNotFoundException("Activite not found : " + id));
     }
 
+    public dislog.cs.cs.model.Service getByService(String id) {
+        return serviceRepo.findByService(id);
+    }
+
     public dislog.cs.cs.model.Service delete(Long id) {
         dislog.cs.cs.model.Service activite = this.getById(id);
         activite.setActive(false);
         return serviceRepo.save(activite);
+    }
+
+    public Long countActive() {
+        return serviceRepo.countActive();
     }
 }

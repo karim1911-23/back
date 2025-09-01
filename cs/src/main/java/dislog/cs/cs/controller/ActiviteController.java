@@ -47,4 +47,8 @@ public class ActiviteController{
         return ResponseEntity.status(200).body(activiteService.getById(id));
     }
 
+    @GetMapping("/count")
+    public Long countActiveActivites() {
+        return activiteService.countActive();
+    }
 }

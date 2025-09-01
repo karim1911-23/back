@@ -26,6 +26,13 @@ public class ActiviteService {
     public Activite getById(Long id) {
         return activiteRepo.findById(id).orElseThrow(() -> new UserNotFoundException("Activite not found : " + id));
     }
+    public Activite getByActivite(String id) {
+        return activiteRepo.findByActivite(id);
+    }
+
+    public Long countActive() {
+        return activiteRepo.countActive();
+    }
 
     public Activite delete(Long id) {
         Activite activite = this.getById(id);

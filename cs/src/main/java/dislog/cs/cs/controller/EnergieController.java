@@ -45,6 +45,11 @@ public class EnergieController {
         return ResponseEntity.status(200).body(energieService.getAll());
     }
 
+    @GetMapping("/count")
+    public Long countActiveEnergies() {
+        return energieService.countActive();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Energie> getById(@PathVariable Long id) {
         return ResponseEntity.status(200).body(energieService.getById(id));

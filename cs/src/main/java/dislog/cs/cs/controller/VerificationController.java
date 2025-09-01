@@ -8,16 +8,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import dislog.cs.cs.service.VerificationService;
+import jakarta.mail.MessagingException;
 
 @RestController
-@RequestMapping("/admin/verification")
+@RequestMapping("/api/admin/verification")
 public class VerificationController {
 
     @Autowired
     private VerificationService verificationService;
 
     @GetMapping("/send-code")
-    public String sendVerificationCode(@RequestParam String email) {
+    public String sendVerificationCode(@RequestParam String email) throws MessagingException {
         return verificationService.sendVerificationCode(email);
     }
 

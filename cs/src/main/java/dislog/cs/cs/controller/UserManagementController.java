@@ -54,15 +54,19 @@ public class UserManagementController {
         return ResponseEntity.ok(usersManagementService.getUsersById(userId));
     }
 
-    @PutMapping("/admin/update")
-    public ResponseEntity<ReqRes> updateUser(@RequestBody OurUsers reqres) {
-        return ResponseEntity.ok(usersManagementService.updateUser(reqres.getId(), reqres));
+    @PutMapping("/admin/update/{id}")
+    public ResponseEntity<ReqRes> updateUser(@PathVariable Long id, @RequestBody OurUsers updatedUser) {
+        return ResponseEntity.ok(usersManagementService.updateUser(id, updatedUser));
     }
 
-    /* @PutMapping("/reset-password")
-    public ResponseEntity<ReqRes> updateUserRes(@RequestBody OurUsers reqres) {
-        return ResponseEntity.ok(usersManagementService.updateUserResetPwd(reqres.getId(), reqres));
-    } */
+    /*
+     * @PutMapping("/reset-password")
+     * public ResponseEntity<ReqRes> updateUserRes(@RequestBody OurUsers reqres) {
+     * return
+     * ResponseEntity.ok(usersManagementService.updateUserResetPwd(reqres.getId(),
+     * reqres));
+     * }
+     */
 
     @GetMapping("/adminuser/get-profile")
     public ResponseEntity<ReqRes> getMyProfile() {

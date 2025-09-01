@@ -32,4 +32,12 @@ public class SiteService {
         activite.setActive(false);
         return siteRepo.save(activite);
     }
+
+    public Site getBySite(String site) {
+        return siteRepo.findBySite(site);
+    }
+
+    public Long countActive() {
+        return siteRepo.countActive();
+    }
 }

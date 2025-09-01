@@ -40,4 +40,16 @@ public class GenerateExcelController {
         return ResponseEntity.ok("uploaded");
     }
 
+    @PostMapping("/uploadV")
+    public ResponseEntity<String> uploadTrancheGhExcelV(@RequestParam("file") MultipartFile file) throws IOException {
+        generateExcelService.uploadDataV(file.getInputStream());
+        return ResponseEntity.ok("uploaded");
+    }
+
+    @PostMapping("/uploadR")
+    public ResponseEntity<String> uploadTrancheGhExcelR(@RequestParam("file") MultipartFile file) throws IOException {
+        generateExcelService.uploadDataR(file.getInputStream());
+        return ResponseEntity.ok("uploaded");
+    }
+
 }
